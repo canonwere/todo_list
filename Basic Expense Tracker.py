@@ -29,22 +29,24 @@ def display_entries(entries):
     print(f"Total Expenses: {expense_total:.2f}")
     print(f"Current Balance: {balance:.2f}\n")
 
-# Function to save entries to a CSV file
-def save_to_file(entries, filename="entries.csv"):
+def save_to_file(entries, filename=None):
+    if not filename:
+        filename = input("Enter filename to save (default: entries.csv): ").strip() or "entries.csv"
     with open(filename, mode="w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["type", "description", "amount"])
         writer.writeheader()
         writer.writerows(entries)
     print(f"Entries saved to {filename}.\n")
 
-# Function to load entries from a CSV file
-def load_from_file(filename="entries.csv"):
+def load_from_file(filename=None):
+    if not filename:
+        filename = input("Enter filename to load (default: entries.csv): ").strip() or "entries.csv"
     entries = []
     try:
         with open(filename, mode="r") as file:
             reader = csv.DictReader(file)
             for row in reader:
-                row["amount"] = float(row["amount"])  # Convert amount back to float
+                row["amount"] = float(row["amount"])
                 entries.append(row)
         print(f"Entries loaded from {filename}.\n")
     except FileNotFoundError:
