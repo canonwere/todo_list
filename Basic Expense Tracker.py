@@ -2,8 +2,20 @@ import csv
 
 # Function to add an entry (income/expense)
 def add_entry(entries, entry_type):
-    description = input(f"Enter {entry_type} description: ")
-    amount = float(input(f"Enter {entry_type} amount: "))
+    description = input(f"Enter {entry_type} description: ").strip()
+    while not description:
+        print("Description cannot be empty.")
+        description = input(f"Enter {entry_type} description: ").strip()
+    
+    while True:
+        try:
+            amount = float(input(f"Enter {entry_type} amount: "))
+            if amount <= 0:
+                raise ValueError("Amount must be greater than 0.")
+            break
+        except ValueError as e:
+            print(f"Invalid input: {e}. Please enter a valid amount.")
+    
     entry = {"type": entry_type, "description": description, "amount": amount}
     entries.append(entry)
     print(f"{entry_type.capitalize()} of {amount} added.\n")
